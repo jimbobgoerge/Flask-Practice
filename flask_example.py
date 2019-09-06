@@ -2,6 +2,7 @@ from flask import Flask
 app = Flask(__name__)
 @app.route("/")
 def view_list():
+
     shopping_list = ["eggs", "ham", "Sausage"]
     printed_list = "<ul>" # start with an open unordered list
     for item in shopping_list:
@@ -11,3 +12,4 @@ def view_list():
         
 if __name__ == "__main__":
     app.run(debug=True)
+    

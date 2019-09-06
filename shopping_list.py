@@ -1,20 +1,29 @@
-from flask import Flask
-import html
+from flask import Flask, request
+import json
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def view_list():
     """
     When users hit the main url displays the user's
     current shopping list.
-
+​
     TODO: 
     * Add a greeting to the user with their name at the top of the page
     * Figure out how to make an HTML form to add a new item (let me know if you need guidence)
     """
     # an HTML representation of the user shopping list
+    with open("user.json", "r") as user_file:
+        user = json.load(user_file)
+    if request.method == "POST":
+        id = (request.form["newitem"])
+        print(request.form["newitem"])
+        user["shopping_list"].append(id)
+        with open("user.json", "w") as user_file:
+           json.dump(user, user_file)
+
     printed_list = user["name"]
-    printed_list += "<form>"
+    printed_list += '<form method="POST">'
     printed_list += '<br>'
     printed_list += 'New Item:<br>'
     printed_list += '<input type="text" name="newitem">'
@@ -24,7 +33,6 @@ def view_list():
     printed_list += list_to_html(user["shopping_list"])
 
     return printed_list
-
 
 @app.route("/hello")
 def hello():
@@ -45,7 +53,6 @@ def list_to_html(shopping_list):
     html_list += f"<li>{item}</li>" # add the current item as a list item
   html_list += "</ul>" # end the unordered list
   return html_list
-
 
 if __name__ == "__main__":
   user = {
