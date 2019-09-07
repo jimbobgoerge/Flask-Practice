@@ -15,13 +15,18 @@ def view_list():
     # an HTML representation of the user shopping list
     with open("user.json", "r") as user_file:
         user = json.load(user_file)
+        """loads the user.json file"""
     if request.method == "POST":
         id = (request.form["newitem"])
+        """bringing the form for 'newitem' into a callable python string as id
+           request.form will call on the input from the user for in this case
+           the text box with name='newitem'"""
         print(request.form["newitem"])
         user["shopping_list"].append(id)
         with open("user.json", "w") as user_file:
            json.dump(user, user_file)
-
+          """creates a user.json file using the user shoppinglist from the user dictionary, 
+          and appends and saves that list"""
     printed_list = user["name"]
     printed_list += '<form method="POST">'
     printed_list += '<br>'
@@ -30,10 +35,11 @@ def view_list():
     printed_list += '<br>'
     printed_list += '<input type="submit" value="Submit">'
     printed_list += "</form>"
+    """HTML form for a simple text box with submit button"""
     printed_list += list_to_html(user["shopping_list"])
-
+    """the += adds them all together"""
     return printed_list
-
+    
 @app.route("/hello")
 def hello():
   """ When someone goes to /hello the browser
