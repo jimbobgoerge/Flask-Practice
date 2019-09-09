@@ -16,7 +16,13 @@ def view_list():
     with open("user.json", "r") as user_file:
         user = json.load(user_file)
         """loads the user.json file"""
+
     if request.method == "POST":
+      if (request.form["submit"] == "Delete"):
+        var1 = request.values["var1"]
+        print(var1)
+        print("It Worked")
+      if (request.form["submit"] == "Submit"):
         id = (request.form["newitem"])
         """bringing the form for 'newitem' into callable python by being stored in a string
         as id request.form will call on the input from the user for in this case the textbox 
@@ -33,7 +39,7 @@ def view_list():
     printed_list += 'New Item:<br>'
     printed_list += '<input type="text" name="newitem">'
     printed_list += '<br>'
-    printed_list += '<input type="submit" value="Submit">'
+    printed_list += '<input type="submit" name="submit" value="Submit">'
     printed_list += "</form>"
     """ HTML form for a simple text box with submit button"""
     printed_list += list_to_html(user["shopping_list"])
@@ -55,8 +61,13 @@ def list_to_html(shopping_list):
   shopping_list(list): A python list of arbitrary items
   """
   html_list = "<ul>" # start with an open unordered list
-  for item in shopping_list:
-    html_list += f"<li>{item}</li>" # add the current item as a list item
+  for item in shopping_list:# <li>{item}</li> adds the current item as a list item
+    html_list += f'\
+    <li>{item}</li>\
+    <form method="POST">\
+    <button type="submit" name="submit" value="Delete" var1=%i>X</button>\
+    </form>\
+    '% shopping_list.index(item)
   html_list += "</ul>" # end the unordered list
   return html_list
 
