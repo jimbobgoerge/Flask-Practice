@@ -18,10 +18,13 @@ def view_list():
         """loads the user.json file"""
 
     if request.method == "POST":
-      if (request.form["submit"] == "Delete"):
-        var1 = request.values["var1"]
-        print(var1)
-        print("It Worked")
+      if isinstance(request.form.get("submit", type=int), int):
+        var1 = (request.form.get("submit", type=int))
+        del user["shopping_list"][var1]
+        #print(type())
+        print("deleted number: %i" % var1)
+        with open("user.json", "w") as user_file:
+          json.dump(user, user_file)
       if (request.form["submit"] == "Submit"):
         id = (request.form["newitem"])
         """bringing the form for 'newitem' into callable python by being stored in a string
@@ -65,7 +68,7 @@ def list_to_html(shopping_list):
     html_list += f'\
     <li>{item}</li>\
     <form method="POST">\
-    <button type="submit" name="submit" value="Delete" var1=%i>X</button>\
+    <button type="submit" name="submit" value=%i>X</button>\
     </form>\
     '% shopping_list.index(item)
   html_list += "</ul>" # end the unordered list
