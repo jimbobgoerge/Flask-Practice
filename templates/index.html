@@ -1,0 +1,27 @@
+
+<!-- Users name -->
+{{ user.name }}
+
+<!-- Form Submission -->
+<form method="POST">
+    <br>
+    New Item:<br>
+    <div class="field">
+        <div class="control">
+            <input type="text" name="newitem">
+        </div>
+    </div>
+    <br>
+    <div class="field">
+        <div class="control">
+            <input type="submit" name="submit" value="Submit">
+        </div>
+    </div>
+</form>
+
+<!-- Shopping list -->
+<ul>
+    {{ shopping_list| safe }}
+</ul>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" integrity="sha256-ujE/ZUB6CMZmyJSgQjXGCF4sRRneOimQplBVLu8OU5w=" crossorigin="anonymous" />

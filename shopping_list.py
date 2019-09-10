@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import json
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ def view_list():
         """loads the user.json file"""
 
     if request.method == "POST":
-      if isinstance(request.form.get("submit", type=int), int):
+      if isinstance(request.form.get("submit", type=int), int): #
         var1 = (request.form.get("submit", type=int))
         del user["shopping_list"][var1]
         #print(type())
@@ -36,19 +36,20 @@ def view_list():
           json.dump(user, user_file)
           """creates a user.json file using the user shoppinglist from the user dictionary, 
           and appends and saves that list"""
-    printed_list = user["name"]
-    printed_list += '<form method="POST">'
-    printed_list += '<br>'
-    printed_list += 'New Item:<br>'
-    printed_list += '<input type="text" name="newitem">'
-    printed_list += '<br>'
-    printed_list += '<input type="submit" name="submit" value="Submit">'
-    printed_list += "</form>"
+    #printed_list = user["name"]
+    #printed_list += '<form method="POST">'
+    #printed_list += '<br>'
+    #printed_list += 'New Item:<br>'
+    #printed_list += '<input type="text" name="newitem">'
+    #printed_list += '<br>'
+    #printed_list += '<input type="submit" name="submit" value="Submit">'
+    #printed_list += "</form>"
     """ HTML form for a simple text box with submit button"""
-    printed_list += list_to_html(user["shopping_list"])
+    #printed_list += list_to_html(user["shopping_list"])
     """ the += adds them all together"""
-    return printed_list
-    
+    #return printed_list
+    return render_template("index.html", user=user, shopping_list=list_to_html(user["shopping_list"]))
+
 @app.route("/hello")
 def hello():
   """ When someone goes to /hello the browser
@@ -63,15 +64,14 @@ def list_to_html(shopping_list):
   ----------
   shopping_list(list): A python list of arbitrary items
   """
-  html_list = "<ul>" # start with an open unordered list
+  html_list = "" # start with an open unordered list
   for item in shopping_list:# <li>{item}</li> adds the current item as a list item
     html_list += f'\
     <li>{item}</li>\
     <form method="POST">\
     <button type="submit" name="submit" value=%i>X</button>\
     </form>\
-    '% shopping_list.index(item)
-  html_list += "</ul>" # end the unordered list
+    '% shopping_list.index(item) #passes position of the item in the
   return html_list
 
 if __name__ == "__main__":
